@@ -156,35 +156,8 @@ PROCESS {
 
         # Check if we need to connect to Purview
         if ($IncludePurview) {
-            # Get organisations primary domain
             $domains = Invoke-MgGraphRequest -Uri "https://graph.microsoft.com/v1.0/domains?`$select=id,isDefault"
             $primaryDomain = $domains.value | Where-Object { $_.isDefault -eq $true } | Select-Object -ExpandProperty id
-
-            $ExchangeConnectionInformation = Get-ConnectionInformation
-            if ($ExchangeConnectionInformation | Where-Object { $_.IsEopSession -eq $true -and $_.State -eq 'Connected' }) {
-               try {
-                  # List of Exchange Online cmdlets that get broken by Connect-IPPSSession
-                  $AffectedCmdlets = @(
-                     'Get-AdminAuditLogConfig'<#,
-                     'Get-ProtectionAlert',
-                     'Get-QuarantinePolicy',
-                     'Get-MxRecordReport',
-                     'Get-HostedConnectionFilterPolicy'#>
-                  )
-
-                  # Remove the broken cmdlets and re-import the working EXO ones
-                  foreach ($Cmdlet in $AffectedCmdlets) {
-                     Remove-Item -Path "Function:\$Cmdlet" -Force -ErrorAction SilentlyContinue
-                  }
-
-                  $ExchangeConnectionInformation | Where-Object { $_.IsEopSession -ne $true -and $_.State -eq 'Connected' } |
-                     Select-Object -ExpandProperty ModuleName |
-                        Import-Module -Function $AffectedCmdlets > $null
-               } catch {
-                  Write-Error "Failed to restore Exchange Online cmdlets: $($_.Exception.Message)"
-               }
-            }
-
 
             Connect-IPPSSession -AccessToken $outlookToken -Organization $primaryDomain -ShowBanner:$false
             Write-Host "✔️ Purview connected."
