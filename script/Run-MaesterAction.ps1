@@ -161,7 +161,6 @@ PROCESS {
             $primaryDomain = $domains.value | Where-Object { $_.isDefault -eq $true } | Select-Object -ExpandProperty id
 
             $ExchangeConnectionInformation = Get-ConnectionInformation
-            Write-Host $ExchangeConnectionInformation
             if ($ExchangeConnectionInformation | Where-Object { $_.IsEopSession -eq $true -and $_.State -eq 'Connected' }) {
                try {
                   # List of Exchange Online cmdlets that get broken by Connect-IPPSSession
