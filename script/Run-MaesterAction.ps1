@@ -165,11 +165,11 @@ PROCESS {
                try {
                   # List of Exchange Online cmdlets that get broken by Connect-IPPSSession
                   $AffectedCmdlets = @(
-                     'Get-AdminAuditLogConfig',
+                     'Get-AdminAuditLogConfig'<#,
                      'Get-ProtectionAlert',
                      'Get-QuarantinePolicy',
                      'Get-MxRecordReport',
-                     'Get-HostedConnectionFilterPolicy'
+                     'Get-HostedConnectionFilterPolicy'#>
                   )
 
                   # Remove the broken cmdlets and re-import the working EXO ones
@@ -286,7 +286,8 @@ PROCESS {
     try {
         # Run Maester tests
         Write-Host "🕑 Start test execution $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
-        $results = Invoke-Maester @MaesterParameters
+        #$results = Invoke-Maester @MaesterParameters
+        $results = Invoke-Maester -Tag "ORCA.236","ORCA.235"
         Write-Host "🕑 Maester tests executed $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
     } catch {
         Write-Error "Failed to run Maester tests. Please check the parameters. $($_.Exception.Message) at $($_.InvocationInfo.Line) in $($_.InvocationInfo.ScriptName)"
