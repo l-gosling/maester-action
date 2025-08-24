@@ -259,7 +259,7 @@ PROCESS {
     try {
         # Run Maester tests
         Write-Host "🕑 Start test execution $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
-        #$results = Invoke-Maester @MaesterParameters
+        $results = Invoke-Maester @MaesterParameters
         Write-Host "🕑 Maester tests executed $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
     } catch {
         Write-Error "Failed to run Maester tests. Please check the parameters. $($_.Exception.Message) at $($_.InvocationInfo.Line) in $($_.InvocationInfo.ScriptName)"
