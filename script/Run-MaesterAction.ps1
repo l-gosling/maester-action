@@ -260,10 +260,6 @@ PROCESS {
         # Run Maester tests
         Write-Host "🕑 Start test execution $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
         #$results = Invoke-Maester @MaesterParameters
-        Write-Host $MaesterParameters
-        Write-Host $MaesterParameters.Keys
-        Write-Host $MaesterParameters.Values
-        $results = Invoke-Maester -Tag "ORCA.236","ORCA.235","MT.1068"
         Write-Host "🕑 Maester tests executed $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss')"
     } catch {
         Write-Error "Failed to run Maester tests. Please check the parameters. $($_.Exception.Message) at $($_.InvocationInfo.Line) in $($_.InvocationInfo.ScriptName)"
